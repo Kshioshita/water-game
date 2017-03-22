@@ -2,23 +2,30 @@
 var alpha, beta, gamma; //ORIENTATION
 var xmotion, ymotion, zmotion; //MOTION
 // P5 STUFF
+// store water level
 var teamA;
 var teamB;
-var widthA;
-var widthB;
+
+// color of the water
 var bg="#2d7eff";
+
+// store water level to be changed
 var waterLevel=0;
+
 var originalHeight;
 var originalWidth;
-var even=false;
-var odd=false;
-var team;
-var winner=false;
-var winningLevel=.9;
-var headerHeight=256;
 
-var myTeam;
+// stores the team
+var team;
+
+// checks if there is a winner
+var winner=false;
+
+//level players have to reach to win
+var winningLevel=.9;
+
 function setup() {
+	// creates smaller canvas for mobile
 	if(windowWidth<700){
 		var myCanvas=createCanvas(320, 380);
 		myCanvas.parent('canvas');
@@ -27,9 +34,10 @@ function setup() {
 		teamA=5;
 		teamB=5;
 	}
+
+	// creates canvas for desktop
 	else{
 		var myCanvas=createCanvas(windowWidth, 326);
-		// myCanvas.parent('canvas');
 		originalHeight=326;
 		originalWidth=window.innerWidth;
 		teamA=5;
@@ -39,20 +47,27 @@ function setup() {
 }
 
 function draw() {
+	// displays different screen when there's no winner
 	if(winner==false){
+		// desktop view
 		if(originalWidth>840){
+			//draw water
 			background(bg);
 			noStroke();
+			// draw bucket
 			fill(200);
 			rect(0, 0, windowWidth/2, originalHeight-teamA);
 			rect(windowWidth/2, 0, windowWidth/2, originalHeight-teamB);
 			fill(200);
+			// draw goal line
 			strokeWeight(4);
 			stroke('red');
 			line(0, height*(1-winningLevel), width, height*(1-winningLevel));
+			// draw line to separate two sides
 			stroke(0);
 			strokeWeight(6);
 			line(width/2, 0, windowWidth/2, height);
+			// draw lines that show progress
 			strokeWeight(2);
 			line(0, height*.25, width/10, height*.25);
 			line(width/2, height*.25, width*(3/5), height*.25);
@@ -63,10 +78,13 @@ function draw() {
 
 		}
 		else{
+			// draw water
 			background(bg);
 			noStroke();
+			// draw bucket
 			fill(220);
 			rect(0, 0, windowWidth, originalHeight-waterLevel);
+			// draw progress lines
 			stroke('black');
 			strokeWeight(2);
 			line(0, height*.25, width/6, height*.25);
@@ -75,6 +93,7 @@ function draw() {
 		}
 	}
 	else{
+		// display winner screen
 		clear();
 		createCanvas(windowWidth, windowHeight-200);
 		background("#6AB5D4");
@@ -83,11 +102,13 @@ function draw() {
 }
 
 function isEven(){
+	// sets team for user if they are on the even team
 	team="even";
 	console.log(team);
 }
 
 function isOdd(){
+	// sets team for user if they are on the odd team 
 	team="odd";
 	console.log(team);
 }
@@ -95,26 +116,32 @@ function isOdd(){
 function changeHeight(t, level){
 	// console.log('level is '+level);
 	if(t=='even'){
+		// adds water to team a bucket
 		teamA=teamA+level;
 		if(teamA>originalHeight){
 			teamA=originalHeight;
 		}
+		// checks if team a has passed goal line
 		if(teamA>winningLevel*originalHeight){
 			// console.log("team A is winner");
 			winner=true;
+			// calls function to congratulate team A
 			congratsA();
 		}
 	}
 	else if(t=='odd'){
+		// adds water to team b bucket
 		teamB=teamB+level;
 		// console.log('inside changeHeight odd');
 		// console.log(teamB);
 		if(teamB>originalHeight){
 			teamB=originalHeight;
 		}
+		// checks if team a has passed goal line
 		if(teamB>winningLevel*originalHeight){
 			// console.log("team B is winner");
 			winner=true;
+			// calls function to congratulate team B
 			congratsB();
 		}
 	}
@@ -122,12 +149,14 @@ function changeHeight(t, level){
 // OTHER JAVASCRIPT DOWN HEARE
 // run this AFTER the page has loaded
 function congratsA(){
+	// alter CSS to display congratulation message
 	document.getElementById('teamA').style.display="none";
 	document.getElementById('teamB').style.display="none";
 	document.getElementById('bucket').style.display="none";
 	document.getElementById('congrats').innerHTML="Congratulations! <br><span>Team A Survived Another Day!</span>";
 }
 function congratsB(){
+	// alter CSS to display congratulation message
 	document.getElementById('teamA').style.display="none";
 	document.getElementById('teamB').style.display="none";
 	document.getElementById('bucket').style.display="none";
@@ -147,8 +176,12 @@ function init(){
 		gamma=Math.floor(event.gamma);
 		
 		if(windowWidth<645){
+			// gets motion info from phones
+			// checks if mobile device is being tipped slowly
 			if(beta<0 && xmotion<1 && ymotion<5 && xmotion<5){
+				// determine how much to increase water level on desktop
 				var level=Math.abs(map(beta, -180, 180, 0, 20));
+				// decrease water level on phone display
 				waterLevel=waterLevel-level;
 				if(waterLevel<0){
 					waterLevel=0;
@@ -156,6 +189,8 @@ function init(){
 				}
 				// console.log('the team is ' + team);
 				// document.getElementById('gamma').innerHTML="inside pour "+level;
+
+				// send how much to increase water by and which team
 				socket.emit('orientation', {
 					'waterLevel': level,
 					'team':team
@@ -198,6 +233,7 @@ function init(){
 		// document.getElementById('zmov').innerHTML=Math.floor(zmotion);
 		// document.getElementById('wlevel').innerHTML=waterLevel;
 
+		// increase water level on mobile display
 		if(windowWidth<645){
 			if(beta>40){
 				var y=map(ymotion, 0, 5000, 0, 30);

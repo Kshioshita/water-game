@@ -20,9 +20,9 @@
     var socket = io.connect();
     socket.on('connect', function() {
       console.log("Connected");
-      socket.emit("newMember");
     });
 
+    // displays team depending on what signal the user receives
     socket.on('evenTeam', function(){
       console.log("You're on Team A");
       document.getElementById("team").innerHTML=("Team A!");

@@ -1,0 +1,2 @@
+#Project 1: Water Collection Game
+I created a game where multiple users can compete in teams using their mobile devices as controllers. The setting of the game is a deserted island and the objective is to collect enough water to survive. Users have to shake their phones to collect water, then tip their phones to contribute to a team bucket. There is a central website that shows the progress of each team and the water level goal. The first team to reach the goal, collected enough water to survive, and wins the game.  
