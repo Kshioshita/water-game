@@ -1,0 +1,132 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  <!-- to get rid of favicon request in console -->
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <title>Mobile Bucket</title>
+  <!-- P5 STUFF -->
+  <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="sketch.js"></script>
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no">
+  <link href="https://fonts.googleapis.com/css?family=Frijole|Sigmar+One" rel="stylesheet">
+  <!-- SOCKET STUFF -->
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+  <script type="text/javascript">
+    var team;
+
+    var socket = io.connect();
+    socket.on('connect', function() {
+      console.log("Connected");
+      socket.emit("newMember");
+    });
+
+    socket.on('evenTeam', function(){
+      console.log("You're on Team A");
+      document.getElementById("team").innerHTML=("Team A!");
+      isEven();
+    });
+
+    socket.on('oddTeam', function(){
+      console.log("You're on Team B");
+      document.getElementById("team").innerHTML=("Team B!");
+      isOdd();
+    });
+
+  </script>
+
+  <style> 
+  body {
+    padding: 0; 
+    margin: 0;
+    }
+  .container{
+    position:absolute;
+    z-index:5;
+    width: 100%;
+  }
+  header{
+    text-align: center;
+    border-bottom: solid black;
+    background: url('beach.jpg') top left fixed no-repeat;
+    background-size: 100%;
+    height: 190px;
+  }
+  h1{
+    font-family: 'Frijole', cursive;
+    font-size: 1.75em;
+    text-align: center;
+    margin-bottom: 0px;
+  }
+  h2{
+    display: none;
+    font-size: 1em;
+    color: darkcyan;
+    font-family: monospace;
+  }
+  h3{
+    font-family: 'Sigmar One', sans-serif;
+    margin: 0;
+    line-height: 110%;
+  }
+  p{
+    font-family: 'Sigmar One', sans-serif;
+    margin: 0px;
+    padding:5px;
+    font-size: .75em;
+
+  }
+  img{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin:0 auto;
+  }
+  #canvas{
+    text-align: center;
+    margin-top: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 320px;
+    height: 380px;
+  }
+  #bucket{
+    width: 320px;
+    height: 380px;
+    margin-top: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    left: 0;
+    right: 0;
+    position: absolute;
+    top:193px;
+    z-index: 10;
+    text-align: center;
+  }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Welcome to <br><span id="team"></span></h1>
+    <h3>Help your team collect enough water to survive!</h3>
+    <p>Shake to fill individual bucket <br>
+    Pour slowly to fill team bucket <br>
+    Careful! Don't Spill!</p>
+  </header>
+  <div id='canvas'></div>
+   <div id="bucket"><img src="bucket.png" alt="bucket"></div>
+  <!-- <div class="container">
+    <h2>alpha: <span id="alpha">0</span></h2>
+    <h2>beta: <span id="beta">0</span></h2>
+    <h2>gamma: <span id="gamma">0</span></h2>
+    <br>
+    <h2>xmov: <span id="xmov">0</span></h2>
+    <h2>ymov: <span id="ymov">0</span></h2>
+    <h2>zmov: <span id="zmov">0</span></h2>
+    <h2>waterLevel: <span id="wlevel">0</span></h2>
+  </div> -->
+</body>
+</html>

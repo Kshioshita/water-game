@@ -1,0 +1,153 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Deserted Island Game</title>
+  <!-- to get rid of favicon request in console -->
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+  <!-- P5 STUFF -->
+  <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="sketch.js"></script>
+
+  <!-- SOCKET STUFF -->
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Frijole|Sigmar+One" rel="stylesheet">
+  <script type="text/javascript">
+
+    
+    /// SOCKET STUFF
+    var socket = io.connect();
+    
+    socket.on('connect', function() {
+      console.log("Connected");
+      socket.emit('newConnection');
+    });
+
+    socket.on('newHeight', function(data){
+      // console.log('change height');
+      // console.log(data.team);
+      changeHeight(data.team, data.waterLevel);
+    })
+
+
+  </script>
+
+  <style> 
+  html{
+    height: 100%;
+    /*border-bottom: solid black;*/
+  }
+  header{
+    background: url('beach.jpg') center -90px fixed no-repeat;
+    background-size: 100%;
+    border-bottom: solid black;
+    height: 197px;
+    margin: 0px;
+  }
+  body {
+    background: url('beach.jpg') center bottom fixed no-repeat;
+    background-size: 120%;
+    height: 100%;
+    padding: 0; 
+    margin: 0;
+}
+  .container{
+    position:absolute;
+    z-index:5;
+    margin-left: 0;
+    width: 100%;
+  }
+  #bucket{
+    max-height: 382px;
+    width: 100%;
+    margin: 0px;
+    position: absolute;
+    z-index: 10;
+  }
+  img{
+    object-fit: fill;
+    width: 49.75%;
+    margin-right: .5%;
+    height: 100%;
+  }
+  .left{
+    margin:0px;
+  }
+  h1{
+    font-family: 'Frijole', cursive;
+    font-size: 2.75em;
+    text-align: center;
+    margin-bottom: 0px;
+  }
+  h2{
+    font-family: 'Sigmar One', cursive;
+    font-size: 1.25em;
+    text-align: center;
+    padding-bottom: 10px;
+    margin: 0px;
+  }
+  h3{
+    font-size: 2em;
+    color: darkcyan;
+    font-family: monospace;
+    display: none;
+  }
+  h4{
+    box-sizing: border-box;
+    width: 50%;
+    float: left;
+    text-align: center;
+    font-size: 2em;
+    margin:0px;
+    border-bottom: solid black;
+  }
+  h5{
+    font-family: 'Frijole', cursive;
+    text-align: center;
+    padding-top: 20px;
+    font-size: 3.75em;
+    margin: 0;
+
+  }
+  #teamA{
+    border-right: solid 3px black;
+    background-color: white;
+    font-family: 'Sigmar One', sans-serif;
+  }
+  #teamB{
+    border-left: solid 3px black;
+    background-color: white;
+    font-family: 'Sigmar One', sans-serif;
+  }
+  span{
+    font-size: .75em;
+  }
+  </style>
+</head>
+
+<body>
+    <header>
+      <h1>Welcome to the <br>deserted island!</h1>
+      <h2>Help your team survive <br> Fill their bucket the fastest!</h2>
+    </header>
+    <h4 id="teamA">Team A</h4>
+    <h4 id="teamB">Team B</h4>
+    <div id="bucket"><img src="bucket.png" alt="bucket"><img class="left" src="bucket.png" alt="bucket"></div>
+  <div class="container">
+    
+    <h5 id="congrats"></h5>
+    <h3>alpha: <span id="alpha">0</span></h3>
+    <h3>beta: <span id="beta">0</span></h3>
+    <h3>gamma: <span id="gamma">0</span></h3>
+    <b3>
+    <h3>xmov: <span id="xmov">0</span></h3>
+    <h3>ymov: <span id="ymov">0</span></h3>
+    <h3>zmov: <span id="zmov">0</span></h3>
+    <h3>waterLevel: <span id="wlevel">0</span></h3>
+  </div>
+</body>
+</html>
+
+
+
