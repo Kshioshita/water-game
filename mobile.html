@@ -20,6 +20,7 @@
     var socket = io.connect();
     socket.on('connect', function() {
       console.log("Connected");
+      socket.emit("newMember");
     });
 
     // displays team depending on what signal the user receives

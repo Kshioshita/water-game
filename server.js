@@ -29,7 +29,6 @@ function requestHandler(req, res) {
 
 // tracks which team to assign
 var teamNum=1;
-
 var io = require('socket.io').listen(httpServer);
 
 io.sockets.on('connection', 
@@ -43,11 +42,12 @@ io.sockets.on('connection',
 		if (teamNum%2==1){
 			console.log('odd team');
 			console.log("member is " + clientId);
-			// increase counter to assign next user to different team
+			// increase counter to assign nex user to different team
 			teamNum++;
-
-			// tell new user they are on the odd team
+			// tel new user they are on the even team
 			io.to(clientId).emit('oddTeam');
+			// io.sockets.socket(clientId).emit('oddTeam');
+			// socket.broadcast.to(clientId).emit('oddTeam');
 		}
 		else if(teamNum%2==0){
 			console.log('even team');
@@ -56,6 +56,8 @@ io.sockets.on('connection',
 			teamNum++;
 			// tell new user they are on the even team
 			io.to(clientId).emit('evenTeam');
+			// io.sockets.socket(clientId).emit('evenTeam');
+			// socket.broadcast.to(clientId).emit('evenTeam');
 		}
 		///MY SOCKET EVENTS HERE
 		socket.on('orientation', function(data){

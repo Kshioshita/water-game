@@ -21,13 +21,14 @@
     
     socket.on('connect', function() {
       console.log("Connected");
+      socket.emit('newConnection');
     });
 
     socket.on('newHeight', function(data){
       // console.log('change height');
       // console.log(data.team);
 
-      // changes the water level depending on water added and which team
+      // changes the water level depending on water add and which team
       changeHeight(data.team, data.waterLevel);
     })
 
